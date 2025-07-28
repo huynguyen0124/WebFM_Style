@@ -1,0 +1,66 @@
+﻿@model WebFM_Style.Models.ProductSizeColor
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>CHỈNH SỬA</h1>
+
+<h4>Sản phẩm Màu Size</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ProductInventoryId" />
+            <div class="form-group">
+                <label asp-for="ProductId" class="control-label">Tên sản phẩm</label>
+                <select asp-for="ProductId" class="form-control" asp-items="ViewBag.ProductId"></select>
+                <span asp-validation-for="ProductId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SizeId" class="control-label">Size</label>
+                <select asp-for="SizeId" class="form-control" asp-items="ViewBag.SizeId"></select>
+                <span asp-validation-for="SizeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ColorId" class="control-label">Màu</label>
+                <select asp-for="ColorId" class="form-control" asp-items="ViewBag.ColorId"></select>
+                <span asp-validation-for="ColorId" class="text-danger"></span>
+            </div>
+          
+            <div class="form-group">
+                <label asp-for="Code" class="control-label">Mã Code</label>
+                <input asp-for="Code" class="form-control" />
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label  class="control-label">Số lượng bán</label>
+                <input asp-for="ProductInventory.QuantitySold" class="form-control" />
+                <span asp-validation-for="ProductInventory.QuantitySold" class="text-danger"></span>
+            </div> 
+                <div class="form-group">
+                <label  class="control-label">Số lượng</label>
+                <input asp-for="ProductInventory.Quantity" class="form-control" />
+                <span asp-validation-for="ProductInventory.Quantity" class="text-danger"></span>
+            </div> 
+          
+            <div class="form-group">
+                <a asp-action="Index" class="btn btn-light">Trở về</a>
+                <button type="submit" class="btn btn-gradient-primary me-2">Sửa</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@* <div>
+    <a asp-action="Index">Back to List</a>
+</div> *@
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

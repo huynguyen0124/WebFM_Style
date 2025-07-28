@@ -1,0 +1,111 @@
+﻿@model WebFM_Style.Models.Collection
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>CHỈNH SỬA</h1>
+
+<h4>Bộ sưu tập</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group flex-grow-1 mx-4">
+                <div id="previewImages" class="d-flex flex-wrap gap-2 mb-3">
+                    <img src="@Url.Content("~/contents/Images/Collection/" + Model.Avatar)" style="width: 200px; height: 200px; border-radius: 20px;" alt="Existing Image">
+                </div>
+                <label class="control-label">Hình ảnh đại diện</label>
+                <input type="file" name="fAvatars" id="imageUpload" class="form-control-file" onchange="previewFiles(event)" />
+            </div>
+            <hr />
+
+            <div class="form-group flex-grow-1 mx-4">
+                <div id="previewImages1" class="d-flex flex-wrap gap-2 mb-3">
+                    <img src="@Url.Content("~/contents/Images/Collection/" + Model.Baner)" style="width: 200px; height: 200px; border-radius: 20px;" alt="Existing Image">
+                </div>
+                <label class="control-label">Hình ảnh đại diện</label>
+                <input type="file" name="fAvatars1" id="imageUpload" class="form-control-file" onchange="previewFiles1(event)" />
+            </div>
+
+            <div class="form-group">
+                <label> Tên bộ sưu tập</label>
+                @* <label asp-for="Name" class="control-label"></label> *@
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label> Mô tả</label>
+                @* <label asp-for="Description" class="control-label"></label> *@
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+           @*  <div class="form-group">
+                <label asp-for="Slug" class="control-label"></label>
+                <input asp-for="Slug" class="form-control" />
+                <span asp-validation-for="Slug" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <label>Trạng Thái</label>
+                <select class="form-control" asp-for="Status" placeholder="" required>
+                    <option value="True" selected>Hoạt động</option>
+                    <option value="False">Ngừng hoạt động</option>
+
+                </select>
+            </div>
+            <div class="form-group">
+                <a asp-action="Index" class="btn btn-light">Trở về</a>
+                <button type="submit" class="btn btn-gradient-primary me-2">Sửa</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@* <div>
+    <a asp-action="Index">Back to List</a>
+</div> *@
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        const previewFiles = (event) => {
+            const files = event.target.files;
+            const previewContainer = document.getElementById("previewImages");
+            previewContainer.innerHTML = ""; // Xóa ảnh cũ
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = document.createElement("img");
+                    img.src = e.target.result;
+                    img.style = "width: 200px; height: 200px; border-radius: 20px; margin-right: 10px;";
+                    previewContainer.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        };
+        const previewFiles1 = (event) => {
+            const files = event.target.files;
+            const previewContainer = document.getElementById("previewImages1");
+            previewContainer.innerHTML = ""; // Xóa ảnh cũ
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = document.createElement("img");
+                    img.src = e.target.result;
+                    img.style = "width: 200px; height: 200px; border-radius: 20px; margin-right: 10px;";
+                    previewContainer.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        };
+    </script>
+
+}

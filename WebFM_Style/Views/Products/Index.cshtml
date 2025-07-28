@@ -1,0 +1,340 @@
+﻿@model IEnumerable<WebFM_Style.Models.Product>
+@using WebFM_Style.Models
+
+@{
+    ViewData["Title"] = "Shop";
+    var categories = ViewBag.Category as List<Category>;
+
+    //du lieu truy qua 
+}
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Shop</h4>
+                    <div class="breadcrumb__links">
+                        <a href="index.html">Trang chủ</a>
+                        <span>Shop</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Shop Section Begin -->
+<section class="shop spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="shop__sidebar">
+                    <div class="shop__sidebar__search">
+                        <form action="@Url.Action("Index", "Products")" method="get">
+                            <input type="text" name="search" placeholder="Search..." value="@Context.Request.Query["search"]">
+                            @if (!string.IsNullOrEmpty(Context.Request.Query["size"]))
+                            {
+                                <input type="hidden" name="size" value="@Context.Request.Query["size"]" />
+                            }
+                            @if (!string.IsNullOrEmpty(Context.Request.Query["color"]))
+                            {
+                                <input type="hidden" name="color" value="@Context.Request.Query["color"]" />
+                            }
+                            @if (!string.IsNullOrEmpty(Context.Request.Query["category"]))
+                            {
+                                <input type="hidden" name="category" value="@Context.Request.Query["category"]" />
+                            }
+                            @if (!string.IsNullOrEmpty(Context.Request.Query["minPrice"]))
+                            {
+                                <input type="hidden" name="minPrice" value="@Context.Request.Query["minPrice"]" />
+                            }
+                            @if (!string.IsNullOrEmpty(Context.Request.Query["maxPrice"]))
+                            {
+                                <input type="hidden" name="maxPrice" value="@Context.Request.Query["maxPrice"]" />
+                            }
+                            <button type="submit"><span class="icon_search"></span></button>
+                        </form>
+                    </div>
+                    <div class="shop__sidebar__accordion">
+                        <div class="accordion" id="accordionExample">
+                            <div class="card">
+                                <div class="card-heading">
+                                    <a data-toggle="collapse" data-target="#collapseOne">Phân loại</a>
+                                </div>
+                                <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        <div class="shop__sidebar__categories">
+                                            <ul class="nice-scroll">
+                                                @foreach (var category in categories)
+                                                {
+                                                    var productCount = category.ProductTypes
+                                                    .SelectMany(pt => pt.Products)
+                                                    .SelectMany(p => p.ProductSizeColors)
+                                                    .Select(psc => psc.ProductId)
+                                                    .Distinct()
+                                                    .Count();
+
+                                                    <li>
+                                                        <a href="@Url.Action("Index", "Products", new { category = category.Name })">
+                                                            @category.Name (@productCount)
+                                                        </a>
+                                                    </li>
+                                                }
+                                                @* Kkk sửa ở đây  *@
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-heading">
+                                    <a data-toggle="collapse" data-target="#collapsePrice">Lọc theo giá</a>
+                                </div>
+                                <div id="collapsePrice" class="collapse show" data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        <form action="@Url.Action("Index", "Products")" method="get">
+                                            <div class="shop__sidebar__price">
+                                                <div class="input-group mb-3">
+                                                    <input type="number" name="minPrice" class="form-control" placeholder="Min" value="@Context.Request.Query["minPrice"]" aria-label="Minimum Price">
+                                                    <span class="input-group-text">-</span>
+                                                    <input type="number" name="maxPrice" class="form-control" placeholder="Max" value="@Context.Request.Query["maxPrice"]" aria-label="Maximum Price">
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Áp dụng</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-heading">
+                                    <a data-toggle="collapse" data-target="#collapseSize">Size</a>
+                                </div>
+                                <div id="collapseSize" class="collapse show" data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        <form action="@Url.Action("Index", "Products")" method="get">
+                                            <div class="shop__sidebar__size">
+                                                @foreach (var size in ViewBag.Sizes)
+                                                {
+                                                    <label for="size-@size.Id" class="class @(Context.Request.Query["size"] == size.Size1 ? "selected active" : "")">
+                                                        @size.Size1
+                                                        <input type="radio" id="size-@size.Id" name="size" value="@size.Size1" onchange="this.form.submit()" @(Context.Request.Query["size"] == size.Size1 ? "checked" : "")>
+                                                    </label>
+                                                }
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-heading">
+                                    <a data-toggle="collapse" data-target="#collapseColor">Lọc theo màu</a>
+                                </div>
+                                <div id="collapseColor" class="collapse show" data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        <form action="@Url.Action("Index", "Products")" method="get">
+                                            <div class="shop__sidebar__color">
+                                                <label class="c-1" for="color-1" style="background-color: #4CAF50;">
+                                                    <input type="radio" id="color-1" name="color" value="Xanh lá" onchange="this.form.submit()">
+                                                </label>
+                                                <label class="c-2" for="color-2" style="background-color: #FFFFFF;">
+                                                    <input type="radio" id="color-2" name="color" value="Trắng" onchange="this.form.submit()">
+                                                </label>
+                                                <label class="c-3" for="color-3" style="background-color: #000000;">
+                                                    <input type="radio" id="color-3" name="color" value="Đen" onchange="this.form.submit()">
+                                                </label>
+                                                <label class="c-4" for="color-4" style="background-color: #F44336;">
+                                                    <input type="radio" id="color-4" name="color" value="Đỏ" onchange="this.form.submit()">
+                                                </label>
+                                                <label class="c-5" for="color-5" style="background-color: #F5F5DC;">
+                                                    <input type="radio" id="color-5" name="color" value="Be" onchange="this.form.submit()">
+                                                </label>
+                                                <label class="c-6" for="color-6" style="background-color: #FFEB3B;">
+                                                    <input type="radio" id="color-6" name="color" value="Vàng" onchange="this.form.submit()">
+                                                </label>
+                                                <label class="c-7" for="color-7" style="background-color: #808080;">
+                                                    <input type="radio" id="color-7" name="color" value="Xám" onchange="this.form.submit()">
+                                                </label>
+                                                <label class="c-8" for="color-8" style="background-color: #8B4513;">
+                                                    <input type="radio" id="color-8" name="color" value="Nâu" onchange="this.form.submit()">
+                                                </label>
+                                                <label class="c-9" for="color-9" style="background-color: #2196F3;">
+                                                    <input type="radio" id="color-9" name="color" value="Xanh dương" onchange="this.form.submit()">
+                                                </label>
+                                                <label class="c-10" for="color-10" style="background-color: #00008B;">
+                                                    <input type="radio" id="color-10" name="color" value="Xanh đen" onchange="this.form.submit()">
+                                                </label>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-heading">
+                                    <a data-toggle="collapse" data-target="#collapseSix">Tags</a>
+                                </div>
+                                <div id="collapseSix" class="collapse show" data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        <div class="shop__sidebar__tags">
+                                            <a href="#">Product</a>
+                                            <a href="#">Bags</a>
+                                            <a href="#">Shoes</a>
+                                            <a href="#">Fashio</a>
+                                            <a href="#">Clothing</a>
+                                            <a href="#">Hats</a>
+                                            <a href="#">Accessories</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="shop__product__option">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="shop__product__option__left">
+                                <p>Showing @((ViewBag.CurrentPage - 1) * 12 + 1)–@Math.Min(ViewBag.CurrentPage * 12, Model.Count()) of @Model.Count() results</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="shop__product__option__right">
+                                <p>Sort by Price:</p>
+                                <select>
+                                    <option value="">Tăng dần</option>
+                                    <option value="">Giảm dần</option>
+                                    
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    @foreach (var product in Model)
+                    {
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="product__item">
+                                <div class="product__item__pic set-bg" data-setbg="/contents/Images/Product/@product.Images.FirstOrDefault()?.Url">
+                                    <ul class="product__hover">
+                                        <li><a href="#"><img src="~/User/img/icon/heart.png" alt=""></a></li>
+                                        <li>
+                                            <a href="#"><img src="~/User/img/icon/compare.png" alt=""> <span>Compare</span></a>
+                                        </li>
+                                        <li><a href="#"><img src="~/User/img/icon/search.png" alt=""></a></li>
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6>@product.Name</h6>
+                                    <a href="" data-id="@product.Id" class="add-to-cart">+ Thêm giỏ hàng</a>
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-o"></i>
+                                    </div>
+                                    <h5> @string.Format("{0:N0}", @product.Price) VNĐ</h5>
+                                  
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="product__pagination">
+                            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                            {
+                                <a class="@(i == ViewBag.CurrentPage ? "active" : "")"
+                                   href="@Url.Action("Index", new {
+                                        pageNumber = i,
+                                        size = Context.Request.Query["size"],
+                                        color = Context.Request.Query["color"],
+                                        minPrice = Context.Request.Query["minPrice"],
+                                        maxPrice = Context.Request.Query["maxPrice"],
+                                        search = Context.Request.Query["search"],
+                                        category = Context.Request.Query["category"]
+                                   })">@i</a>
+                            }
+                            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                            {
+                                <span>...</span>
+                                <a href="@Url.Action("Index", new {
+                                    pageNumber = ViewBag.TotalPages,
+                                    size = Context.Request.Query["size"],
+                                    color = Context.Request.Query["color"],
+                                    minPrice = Context.Request.Query["minPrice"],
+                                    maxPrice = Context.Request.Query["maxPrice"],
+                                    search = Context.Request.Query["search"],
+                                    category = Context.Request.Query["category"]
+                                })">@ViewBag.TotalPages</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <style>
+        .pro-qty {
+            display: flex;
+            align-items: center;
+            max-width: 120px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+            .pro-qty input {
+                width: 50px;
+                text-align: center;
+                border: none;
+                padding: 5px;
+            }
+
+            .pro-qty button {
+                background: none;
+                border: none;
+                padding: 5px 10px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+
+                .pro-qty button:hover {
+                    background-color: #f5f5f5;
+                }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            $('.qtybtn').on('click', function() {
+                var $button = $(this);
+                var $input = $button.parent().find('input');
+                var oldValue = parseInt($input.val());
+
+                if ($button.hasClass('inc')) {
+                    // Tăng giá trị
+                    var newVal = oldValue + 1;
+                } else {
+                    // Giảm giá trị nhưng không nhỏ hơn 1
+                    var newVal = oldValue > 1 ? oldValue - 1 : 1;
+                }
+
+                $input.val(newVal);
+            });
+
+            // Ngăn người dùng nhập trực tiếp vào input
+            $('#productQuantity').on('keydown', function(e) {
+                e.preventDefault();
+                return false;
+            });
+        });
+    </script>
+
+
+
+
+
+<!-- Shop Section End -->

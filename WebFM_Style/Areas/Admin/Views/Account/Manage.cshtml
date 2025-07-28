@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Account>
+<div class="page-header">
+    <h3 style="font-family:Helvetica;" class="page-title"> TÀI KHOẢN QUẢN LÝ </h3>
+  
+</div>
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 style="font-family:Helvetica;" class="card-title"> TÀI KHOẢN QUẢN LÝ </h4>
+            <div class="d-flex justify-content-between">
+
+                <a asp-action="CreateQL" class="btn btn-success mb-2">Thêm</a>
+
+
+            </div>
+            @*  @await Html.PartialAsync("_PartialViewCreateList", new Account()) *@
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+
+                        <th> HỌ TÊN & NGÀY SINH </th>
+                        <th>TÊN TÀI KHOẢN </th>
+                        <th>EMAIL </th>
+                        <th>SĐT </th>
+                        <th>CHỨC VỤ </th>
+
+                        <th> TRẠNG THÁI  </th>
+                        <th> THAO TÁC  </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                <div style="margin-bottom:5px;">
+                                    @item.FullName
+                                </div>
+                                @(item.Birthday.HasValue
+                                    ? item.Birthday.Value.ToString("dd/MM/yyyy", new System.Globalization.CultureInfo("vi-VN"))
+                                    : "")
+                                @* <div>
+                                    @item.Birthday
+                                </div> *@
+                            </td>
+
+                            <td> @item.UserName </td>
+                            <td> @item.Email </td>
+                            <td> @item.Phone </td>
+                            <td>
+                                @item.Role?.Name
+                            </td>
+
+
+                            @if (item.Status == 1)
+                            {
+                                <td> Hoạt động </td>
+                            }@if (item.Status == 2)
+                            {
+                                <td>Ngừng Hoạt động </td>
+                            }
+                            <td>
+                                <a asp-action="DetailsQL" asp-route-id="@item.Id" class="action-icon"> <i class="mdi mdi-eye" style="color:#19b6ff;font-size:25px;"></i>  </a>
+                                <a asp-action="Editql" asp-route-id="@item.Id" class="action-icon"> <i class="mdi mdi-square-edit-outline" style="color:#ffd83b;font-size:25px;"></i></a>
+                                <a asp-action="DeleteQL" asp-route-id="@item.Id" class="action-icon"> <i class="mdi mdi-delete" style="color:#e75555;font-size:25px;"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

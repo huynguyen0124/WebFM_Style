@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Bộ sưu tập";
+}
+@model IEnumerable<WebFM_Style.Models.Collection>
+<section class="hero">
+    <div class="hero__slider owl-carousel">
+        @foreach (var item in Model.Take(3))
+        {
+            <div class="hero__items set-bg" data-setbg="/contents/Images/Collection/@item.Baner">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-5 col-lg-7 col-md-8">
+                            <div class="hero__text">
+                                <h6>Bộ Sưu Tập Mùa Hè</h6>
+                                <h2>@item.Name</h2>
+                                <p>
+                                    Nhãn hiệu chuyên biệt tạo ra những sản phẩm xa xỉ thiết yếu. Sản xuất đạo đức với cam kết
+                                    không ngừng về chất lượng tuyệt vời.
+                                </p>
+                                <a href="#" class="primary-btn">Mua ngay <span class="arrow_right"></span></a>
+                                <div class="hero__social">
+                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                    <a href="#"><i class="fa fa-pinterest"></i></a>
+                                    <a href="#"><i class="fa fa-instagram"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+
+    </div>
+</section>
+
+
+
+<!-- Product Section Begin -->
+<section class="product spad" style="margin-top:50px">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 style="text-align:center ; margin-bottom:50px;" data-filter="*">Bộ sưu tập</h2>
+            </div>
+        </div>
+        <div class="row product__filter">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="/contents/Images/Collection/@item.Avatar">
+                            <span class="label">New</span>
+
+                        </div>
+                        <div class="product__item__text">
+                            <h6>@item.Name</h6>
+                            <a asp-action="Details" asp-route-id="@item.Id" style="text-align:center" class="add-cart">Xem thêm</a>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-o"></i>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+
+</section>
+<!-- Product Section End -->

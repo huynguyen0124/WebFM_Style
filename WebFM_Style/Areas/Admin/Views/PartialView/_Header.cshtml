@@ -1,0 +1,156 @@
+﻿@{
+    var AvartarClaim = User.Claims.FirstOrDefault(c => c.Type == "Avartar");
+    var Avartar = "";
+    if (AvartarClaim != null)
+    { Avartar = AvartarClaim.Value; }
+}
+
+<style>
+    /* Make the background of the count symbol transparent */
+    .count-symbol {
+        background-color: transparent;
+    }
+
+    /* Remove the border */
+    .count-symbol {
+        border: none;
+    }
+
+    /* Optional: If you want to remove the default styles for links inside buttons */
+    .count-indicator a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+</style>
+<nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+    <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+        <a class="navbar-brand brand-logo" asp-action="Index" asp-controller="Home"><img src="~/User/img/logo1.png" alt="logo" /></a>
+        <a class="navbar-brand brand-logo-mini" asp-action="Index" asp-controller="Home"><img src="~/User/img/logo1.png" alt="logo" /></a>
+    </div>
+    <div class="navbar-menu-wrapper d-flex align-items-stretch">
+        <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+            <span class="mdi mdi-menu"></span>
+        </button>
+        <div class="search-field d-none d-md-block">
+            <form class="d-flex align-items-center h-100" action="#">
+                <div class="input-group">
+                    <div class="input-group-prepend bg-transparent">
+                        <i class="input-group-text border-0 mdi mdi-magnify"></i>
+                    </div>
+                    <input type="text" class="form-control bg-transparent border-0" placeholder="Search projects">
+                </div>
+            </form>
+        </div>
+        <ul class="navbar-nav navbar-nav-right">
+            <li class="nav-item nav-profile dropdown">
+                <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="nav-profile-img">
+                        <img src="@Avartar" alt="Ảnh đại diện">
+                        <span class="availability-status online"></span>
+                    </div>
+                    <div class="nav-profile-text">
+                        <p class="mb-1 text-black">@User.Identity?.Name</p>
+                    </div>
+                </a>
+                <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
+                    <a class="dropdown-item" href="#">
+                        <i class="mdi mdi-cached me-2 text-success"></i> Trang cá nhân
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" asp-action="Logout" asp-controller="Account">
+                        <i class="mdi mdi-logout me-2 text-primary"></i> Đăng xuất
+                    </a>
+                </div>
+            </li>
+            <li class="nav-item d-none d-lg-block full-screen-link">
+                <a class="nav-link">
+                    <i class="mdi mdi-fullscreen" id="fullscreen-button"></i>
+                </a>
+            </li>
+            <li class="nav-item dropdown">
+
+                <button style="background-color: transparent; border: none;" class="nav-link count-indicator dropdown-toggle"
+                id="messageDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="mdi mdi-email-outline"></i>
+                    <span class="count-symbol bg-warning"></span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
+                    <h6 class="p-3 mb-0">Tin nhắn</h6>
+                    <div class="dropdown-divider"></div>
+                    <div id="messageList"><!-- Message items will be appended here --></div>
+                    <div class="dropdown-divider"></div>
+                    <h6 class="p-3 mb-0 text-center">4 tin nhắn mới</h6>
+                </div>
+            </li>
+        
+            <li class="nav-item nav-logout d-none d-lg-block">
+                <a class="nav-link" href="#">
+                    <i class="mdi mdi-power"></i>
+                </a>
+            </li>
+            <li class="nav-item nav-settings d-none d-lg-block">
+                <a class="nav-link" href="#">
+                    <i class="mdi mdi-format-line-spacing"></i>
+                </a>
+            </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+            <span class="mdi mdi-menu"></span>
+        </button>
+    </div>
+</nav>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Add a click event listener to the button
+        $('#messageDropdown').on('click', function () {
+            // Call your AJAX function here
+            getMessage();
+        });
+
+        function getMessage() {
+            $.ajax({
+                url: '/Chat/GetMessage',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    handleGetMessageResponse(data);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Ajax error:', status, error);
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+        function handleGetMessageResponse(data) {
+            var messageListContainer = $('#messageList');
+
+            // Clear existing messages
+            messageListContainer.empty();
+
+            // Iterate through messages and append them to the container
+            data.forEach(function (message) {
+                var messageItem = $('<button>', { class: 'dropdown-item preview-item' });
+                var previewThumbnail = $('<div>', { class: 'preview-thumbnail' });
+                var profilePic = $('<img>', { src: '/contents/Images/User/' + message.avatar, alt: 'image', class: 'profile-pic' });
+                var previewItemContent = $('<div>', { class: 'preview-item-content d-flex align-items-start flex-column justify-content-center' });
+                var previewSubject = $('<h6>', { class: 'preview-subject ellipsis mb-1 font-weight-normal', text: message.name });
+                var timestamp = $('<p>', { class: 'text-gray mb-0', text: message.messages }); // Adjust timestamp as needed
+
+                previewThumbnail.append(profilePic);
+                previewItemContent.append(previewSubject, timestamp);
+                messageItem.append(previewThumbnail, previewItemContent);
+
+                ///add sự kiện gửi api get chat 
+                messageItem.on('click', function () {
+                    toggleChat1(message.userName);
+                });
+                messageListContainer.append(messageItem);
+            });
+        }
+    });
+
+
+</script>

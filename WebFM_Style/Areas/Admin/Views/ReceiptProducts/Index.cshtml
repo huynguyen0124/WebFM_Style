@@ -1,0 +1,92 @@
+﻿@using System.Globalization
+@model IEnumerable<WebFM_Style.Models.ReceiptProduct>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="page-header">
+    <h3 style="font-family:Helvetica;" class="page-title"> Quản lý nhập sản phẩm </h3>
+    <nav aria-label="breadcrumb">
+
+    </nav>
+</div>
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <p>
+                <a asp-action="Create" class="btn btn-success mb-2">Thêm</a>
+            </p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Mã Sản phẩm Màu Size
+                            @* @Html.DisplayNameFor(model => model.ProductSizeColor) *@
+                        </th>
+                        <th>
+                            Số lượng
+                            @* @Html.DisplayNameFor(model => model.Quantity) *@
+                        </th>
+                        <th>
+                            Đơn giá
+                            @* @Html.DisplayNameFor(model => model.Price) *@
+                        </th>
+
+                        <th>
+                            Ngày tạo
+                            @* @Html.DisplayNameFor(model => model.CreateDay) *@
+                        </th>
+                        <th>
+                            Trạng thái
+                            @* @Html.DisplayNameFor(model => model.Status) *@
+                        </th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProductSizeColor.Code)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Quantity)
+                            </td>
+                            <td>
+                                @string.Format(new CultureInfo("vi-VN"), "{0:C0}", item.Price)
+                            </td>
+
+                            <td>
+                                @(item.CreateDay.HasValue
+                                    ? item.CreateDay.Value.ToString("dd/MM/yyyy", new System.Globalization.CultureInfo("vi-VN"))
+                                    : "")
+                            </td>
+                            @* <td>
+                                @Html.DisplayFor(modelItem => item.CreateDay)
+                            </td> *@
+                            @if (item.Status == 1)
+                            {
+                                <td>
+                                    Đã Nhập
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    Ngừng hoạt động
+                                </td>
+                            }
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="action-icon"> <i class="mdi mdi-eye" style="color:#19b6ff;font-size:25px;"></i>  </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

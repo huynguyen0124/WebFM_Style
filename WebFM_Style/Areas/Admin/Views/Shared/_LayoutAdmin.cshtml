@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewData["Title"] </title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="~/LayoutAdmin/assets/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="~/LayoutAdmin/assets/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="~/LayoutAdmin/assets/css/style.css">
+    <link rel="shortcut icon" href="~/LayoutAdmin/assets/images/favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+    <style>
+        div {
+            font-family: Helvetica;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-scroller">
+        <!-- partial:~/partials/_navbar.html -->
+        @await Html.PartialAsync("~/Areas/Admin/Views/PartialView/_Header.cshtml")
+        <!-- partial -->
+        <div class="container-fluid page-body-wrapper" style="padding-top:70px">
+            <!-- partial:~/partials/_sidebar.html -->
+            @await Html.PartialAsync("~/Areas/Admin/Views/PartialView/_Menu.cshtml")
+            <!-- partial -->
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    @RenderBody()
+                </div>
+                <!-- content-wrapper ends -->
+                <!-- partial:~/partials/_footer.html -->
+                @await Html.PartialAsync("~/Areas/Admin/Views/PartialView/_Footer.cshtml")
+                <!-- partial -->
+            </div>
+            <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+
+    <script src="~/LayoutAdmin/assets/vendors/js/vendor.bundle.base.js"></script>
+    <script src="~/LayoutAdmin/assets/js/off-canvas.js"></script>
+    <script src="~/LayoutAdmin/assets/js/hoverable-collapse.js"></script>
+    <script src="~/LayoutAdmin/assets/js/misc.js"></script>
+    <script src="~/layoutadmin/assets/js/chart.js"></script>
+    <script src="~/layoutadmin/assets/js/dashboard.js"></script>
+    <script src="~/layoutadmin/assets/js/todolist.js"></script>
+
+    <script src="~/layoutadmin/assets/js/jquery.cookie.js"></script>
+    @await Component.InvokeAsync("Notyf");
+    @RenderSection("scripts", required: false);
+</body>
+</html>

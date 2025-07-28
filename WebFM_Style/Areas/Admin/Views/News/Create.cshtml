@@ -1,0 +1,81 @@
+﻿@model WebFM_Style.Models.News
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>THÊM</h1>
+
+<h4>Tin tức</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group  flex-grow-1 mx-4">
+                <div id="image-preview">
+                    <div id="preview-container"></div>
+                    <br />
+                    <label class="control-label"> Images</label>
+                    <input type="file" name="fAvatars" class="form-control-file" onchange="previewImages(this)" required />
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="Title" class="control-label">Tên Blog</label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label">Nội dung</label>
+                <textarea asp-for="Content" class="form-control" id="summernote"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-gradient-primary me-2">Thêm mới</button>
+                <a asp-action="Index" class="btn btn-light">Trở về</a>
+            </div>
+        </form>
+    </div>
+</div>
+@* <div>
+    <a asp-action="Index">Back to List</a>
+</div> *@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.min.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                height: 200 // set height
+            });
+        });
+    </script>
+}
+<script>
+    function previewImages(input) {
+        var previewContainer = document.getElementById('preview-container');
+        previewContainer.innerHTML = '';
+        if (input.files) {
+            Array.from(input.files).forEach(file => {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var img = document.createElement('img');
+                    img.setAttribute('src', e.target.result);
+                    img.style.width = '200px';
+                    img.style.height = '200px';
+                    img.style.borderRadius = '20px';
+                    img.style.display = 'block';
+                    previewContainer.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            });
+        }
+    };
+</script>

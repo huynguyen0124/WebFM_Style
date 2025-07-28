@@ -1,0 +1,113 @@
+﻿@model WebFM_Style.Models.Collection
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>THÊM</h1>
+
+<h4>Bộ sưu tập</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group  flex-grow-1 mx-4">
+                <div id="image-preview">
+                    <div id="preview-container"></div>
+                    <br />
+                    <label class="control-label"> Hình ảnh đại diện</label>
+                    <input type="file" name="fAvatars" class="form-control-file" onchange="previewImages(this)"  required />
+                </div>
+            </div>
+            <hr />
+
+            <div class="form-group  flex-grow-1 mx-4">
+                <div id="image-preview">
+                    <div id="preview-container1"></div>
+                    <br />
+                    <label class="control-label"> Baner</label>
+                    <input type="file" name="fAvatars1" class="form-control-file" onchange="previewImages1(this)" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label> Tên bộ sưu tập</label>
+                @* <label asp-for="Name" class="control-label"></label> *@
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label> Mô tả</label>
+                @* <label asp-for="Description" class="control-label"></label> *@
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            @* <div class="form-group">
+                <label asp-for="Slug" class="control-label"></label>
+                <input asp-for="Slug" class="form-control" />
+                <span asp-validation-for="Slug" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <label>Trạng Thái</label>
+                <select class="form-control" asp-for="Status" placeholder="" required>
+                    <option value="True" selected>Hoạt động</option>
+                    <option value="False">Ngừng hoạt động</option>
+
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-gradient-primary me-2">Thêm mới</button>
+                <a asp-action="Index" class="btn btn-light">Trở về</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@* <div>
+    <a asp-action="Index">Back to List</a>
+</div> *@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script>
+    function previewImages(input) {
+        var previewContainer = document.getElementById('preview-container');
+        previewContainer.innerHTML = '';
+        if (input.files) {
+            Array.from(input.files).forEach(file => {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var img = document.createElement('img');
+                    img.setAttribute('src', e.target.result);
+                    img.style.width = '200px';
+                    img.style.height = '200px';
+                    img.style.borderRadius = '20px';
+                    img.style.display = 'block';
+                    previewContainer.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            });
+        }
+    }; function previewImages1(input) {
+        var previewContainer = document.getElementById('preview-container1');
+        previewContainer.innerHTML = '';
+        if (input.files) {
+            Array.from(input.files).forEach(file => {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var img = document.createElement('img');
+                    img.setAttribute('src', e.target.result);
+                    img.style.width = '200px';
+                    img.style.height = '200px';
+                    img.style.borderRadius = '20px';
+                    img.style.display = 'block';
+                    previewContainer.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            });
+        }
+    };
+</script>

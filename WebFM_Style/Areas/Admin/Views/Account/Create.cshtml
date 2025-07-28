@@ -1,0 +1,85 @@
+﻿@model Account
+@{
+    ViewData["Title"] = "Create";
+
+}
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">THÊM KHÁCH HÀNG</h4>
+            <p class="card-description"> Nhập thông tin  </p>
+            <form class="forms-sample" asp-action="Create" method="post" enctype="multipart/form-data">
+                <div class="form-group  flex-grow-1 mx-4">
+                    <div id="image-preview">
+                        <img id="preview" src="#" alt="" style="width: 200px; height: 200px; border-radius: 20px; display: none;">
+                        <br />
+                        <label asp-for="Avartar" class="control-label"></label>
+                        <input type="file" name="fAvatar" asp-for="Avartar" class="form-control-file" onchange="previewImage(this)" />
+                    </div>
+                    <span asp-validation-for="Avartar" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Tài khoản</label>
+                    <input type="" class="form-control" asp-for="UserName" placeholder="Tài khoản" required>
+                </div> 
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" class="form-control" asp-for="Email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <label>SĐT</label>
+                    <input type="number" class="form-control" asp-for="Phone" placeholder="SĐT" required>
+                </div> <div class="form-group">
+                    <label>Họ Tên</label>
+                    <input class="form-control" asp-for="FullName" placeholder="Họ Tên" required>
+                </div>
+                <div class="form-group">
+                    <label>Ngày Sinh</label>
+                    <input class="form-control" asp-for="Birthday"type="date" placeholder="Ngày Sinh" required>
+                </div>
+                <div class="form-group">
+                    <label>Giới tính </label>
+                    <select class="form-control" asp-for="Gender" placeholder="" required>
+                        <option value="1" selected>Nam</option>
+                        <option value="2">Nữ</option>
+
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Trạng Thái </label>
+                    <select class="form-control" asp-for="Status" placeholder="" required>
+                        <option value="1" selected>Hoạt động</option>
+                        <option value="2">Ngừng hoạt động</option>
+
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-gradient-primary me-2">Thêm Mới</button>
+              
+                    <a asp-action="Index" class="btn btn-light">Trở về</a>
+              
+            </form>
+          
+        </div>
+       
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        function previewImage(input) {
+            var preview = document.getElementById('preview');
+            var imagePreview = document.getElementById('image-preview');
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.setAttribute('src', e.target.result);
+                    preview.style.display = 'block';
+                    imagePreview.style.display = 'block';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}

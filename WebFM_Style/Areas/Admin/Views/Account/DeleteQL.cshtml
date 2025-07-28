@@ -1,0 +1,77 @@
+﻿@model Account
+
+<h1>XÓA QUẢN LÝ</h1>
+<h3>Bạn có chắc là muốn xóa không?</h3>
+
+<div>
+
+    <hr />
+    <br />
+    <dl class="row">
+        <dt class="col-sm-2">
+
+            Họ và tên
+        </dt>
+        <dd class="col-sm-10">
+            @Model.FullName
+        </dd>
+        <dt class="col-sm-2">
+
+            Ngày sinh
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.Birthday.HasValue
+                ? Model.Birthday.Value.ToString("dd/MM/yyyy", new System.Globalization.CultureInfo("vi-VN"))
+                : "")
+        </dd>
+       @*  <dd class="col-sm-10">
+            @Model.Birthday
+        </dd> *@
+        <dt class="col-sm-2">
+
+            Email
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Email
+        </dd>
+        <dt class="col-sm-2">
+
+            Tài khoản
+        </dt>
+        <dd class="col-sm-10">
+            @Model.UserName
+        </dd>
+        <dt class="col-sm-2">
+
+            Chức vụ
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Role?.Name
+        </dd>
+
+        <dt class="col-sm-2">
+
+            TRẠNG THÁI
+        </dt>
+
+        @if (Model.Status == 1)
+        {
+            <dd class="col-sm-10">
+                Hoạt động
+            </dd>
+        }@if (Model.Status == 2)
+        {
+            <dd class="col-sm-10">
+                Ngừng hoạt động
+            </dd>
+        }
+    </dl>
+    <br />
+    <form asp-action="DeleteQL">
+        <div style="float: left; padding-right:10px">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Xóa" class="btn btn-danger" />
+        </div>
+        <a class="btn btn-secondary" asp-action="Manage">Quay Lại</a>
+    </form>
+</div>

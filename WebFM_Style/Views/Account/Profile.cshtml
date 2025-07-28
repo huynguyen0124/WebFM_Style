@@ -1,0 +1,505 @@
+﻿@model Account
+@{
+    var AvartarClaim = User.Claims.FirstOrDefault(c => c.Type == "Avartar");
+    var Avartar = "";
+    if (AvartarClaim != null)
+    { Avartar = AvartarClaim.Value; }
+    var Addresses = ViewBag.Addresses;
+    ViewData["Title"] = "Profile";
+    var DonHang = ViewBag.Donhang as List<Order>;
+}
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<style>
+    body {
+        margin-top: 20px;
+        color: #333;
+        text-align: left;
+        background-color: #f8f9fa;
+    }
+
+    .main-body {
+        padding: 30px;
+        margin-top: 100px;
+        border-radius: 10px;
+        background-color: #ffffff;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .card-body {
+        padding: 25px;
+    }
+
+    h3 {
+        color: #007bff;
+        font-weight: bold;
+    }
+
+    h5 {
+        font-family: 'Muli', sans-serif;
+        margin-bottom: 10px;
+    }
+
+    .btn {
+        border-radius: 20px;
+    }
+
+    .list-group-item {
+        border: none;
+    }
+
+    .list-group-item:hover {
+        background-color: #f1f1f1;
+    }
+</style>
+<div class="container">
+    <div class="main-body">
+
+        <!-- Breadcrumb -->
+        <div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px; background-color:white !important">
+            <div class="container">
+                <div class="row g-2">
+                    <h1 style="text-align:center">
+                        Trang cá nhân
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <!-- /Breadcrumb -->
+
+        <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <img src="@Avartar" alt="Admin" class="rounded-circle" width="180">
+                            <div class="mt-3">
+                                <h4>@Model.FullName</h4>
+                                @*  <p class="text-secondary mb-1">Full Stack Developer</p>
+                                <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
+                                <button class="btn btn-primary">Follow</button>
+                                <button class="btn btn-outline-primary">Message</button> *@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe mr-2 icon-inline"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>Website</h6>
+                            <span class="text-secondary"></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github mr-2 icon-inline"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>Github</h6>
+                            <span class="text-secondary"></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter mr-2 icon-inline text-info"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>Twitter</h6>
+                            <span class="text-secondary"></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram mr-2 icon-inline text-danger"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>Instagram</h6>
+                            <span class="text-secondary"></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook mr-2 icon-inline text-primary"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>Facebook</h6>
+                            <span class="text-secondary"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Họ tên</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                @Model.FullName
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                @Model.Email
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Phone</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                @Model.Phone
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a class="btn btn-secondary rounded-pill py-sm-3 px-sm-5 ms-3" asp-action="EditProfile">Sửa thông tin</a>
+                                <button class="btn btn-primary rounded-pill py-sm-3 px-sm-5" data-toggle="modal" data-target="#changePasswordModal">Đổi mật khẩu</button>
+                            </div>
+                        </div>
+                        <hr>
+                        <h4 style="text-align:center">Danh sách địa chỉ</h4>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a class="btn btn-primary rounded-pill py-sm-3 px-sm-5" data-toggle="modal" data-target="#myModal">Thêm địa chỉ</a>
+                            </div>
+                        </div>
+                        <hr />
+                        @foreach (var item in Addresses)
+                        {
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Địa chỉ </h6>
+                                </div>
+                                <div class="col-sm-6 text-secondary">
+                                    @item.Street
+                                    @item.Ward
+                                    @item.District
+                                    @item.City
+                                    @item.Country
+                                </div>
+                                <div class="col-sm-3">
+
+                                    <button onclick="getaddres(@item.Id)" class="action-icon"
+                                            style="border:none; outline:none;">
+                                        <i class="fas fa-edit"
+                                           style="color:#ffd83b;font-size:25px;"></i>
+                                    </button>
+                                    <button onclick="getaddres1(@item.Id)" class="action-icon"
+                                            style="border:none; outline:none;">
+                                        <i class="fas fa-trash"
+                                           style="color:#e75555;font-size:25px;"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <hr>
+
+                        }
+
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h3 style="text-align:center; margin-bottom:20px; color:#007bff;">Lịch sử mua hàng</h3>
+                        <div class="row" style="margin-bottom:10px; background-color: #f8f9fa; padding: 10px; border-radius: 10px;">
+                            <div class="col-sm-1">
+                                <h5 class="mb-0">STT</h5>
+                            </div>
+                            <div class="col-sm-2">
+                                <h5 class="mb-0">Họ tên</h5>
+                            </div>
+                            <div class="col-sm-2">
+                                <h5 class="mb-0">Địa chỉ giao hàng</h5>
+                            </div> 
+                            <div class="col-sm-1">
+                                <h5 class="mb-0">Ngày đặt hàng</h5>
+                            </div> 
+                            <div class="col-sm-2">
+                                <h5 class="mb-0">Số lượng sản phẩm</h5>
+                            </div>
+                            <div class="col-sm-2">
+                                <h5 class="mb-0">Tổng tiền</h5>
+                            </div>
+                            <div class="col-sm-2">
+                                <h5 class="mb-0">Trạng thái</h5>
+                            </div>
+                        </div>
+                        @{
+                            int stt = 1;
+                            
+                        }
+                        @foreach (var item in DonHang)
+                        {
+                            <div class="row" style="padding:10px; background-color: #ffffff; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+                                <div class="col-sm-1">
+                                    <h5 class="mb-0">@stt</h5>
+                                </div>
+                                <div class="col-sm-2">
+                                    <h5 class="mb-0">@item.Account.FullName</h5>
+                                </div>
+                                <div class="col-sm-2">
+                                    <h5 class="mb-0">
+                                        @item.Account.Addresses.FirstOrDefault().Street
+                                        @item.Account.Addresses.FirstOrDefault().Ward
+                                        @item.Account.Addresses.FirstOrDefault().District
+                                        @item.Account.Addresses.FirstOrDefault().City
+                                        @item.Account.Addresses.FirstOrDefault().Country
+                                    </h5>
+                                </div>
+                                <div class="col-sm-1">
+                                    <h5 class="mb-0">@item.CreateDay</h5>
+                                </div>
+                                <div class="col-sm-2">
+                                    @{
+                                        int ssp = 1;
+                                    }
+                                    @foreach (var item1 in item.OderItems)
+                                    {
+                                        <h5 class="mb-0" style="font-family: 'Muli'; color:#F65005 !important">
+                                            @ssp X  <div class="d-flex align-items-center">
+                                                <img src="@Url.Content("~/contents/Images/Product/" + item1.ProductSizeColor.Product.Images.FirstOrDefault().Url)"
+                                                     alt="@item1.ProductSizeColor.Product.Name"
+                                                     style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px; margin-right: 10px;">
+                                                <span>@item1.ProductSizeColor.Product.Name</span>
+                                            </div>
+                                        </h5>
+                                        ssp++;
+                                    }
+                                </div>
+                                <div class="col-sm-2">
+                                    <h5 class="mb-0">
+                                        @string.Format("{0:N0}", @item.Total) VNĐ
+                                    </h5>
+                                </div>
+                                <div class="col-sm-2">
+                                    @if (item.Status == 2)
+                                    {
+                                        <h5 class="mb-0">Chờ Admin xác nhận</h5>
+                                        <a class="btn btn-secondary rounded-pill py-sm-1 px-sm-3" asp-route-id="@item.Id" asp-action="CanOrderby">Hủy đơn</a>
+                                    }
+                                    else if (item.Status == 3)
+                                    {
+                                        <h5 class="mb-0">Đang vận chuyển</h5>
+                                    }
+                                    else if (item.Status == 4)
+                                    {
+                                        <h5 class="mb-0">Đã nhận</h5>
+                                    }
+                                    else if (item.Status == 5)
+                                    {
+                                        <h5 class="mb-0">Đã hủy</h5>
+                                    }
+                                </div>
+                                <hr />
+                            </div>
+                            stt++;
+                        }
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Create">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Thêm địa chỉ</h4>
+                    <button type="button" style="border:none; outline:none;" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input class="form-control form-control-lg" name="streest" placeholder="Tên đường" required>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <input class="form-control form-control-lg" name="ward" placeholder="Phường" required>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <input class="form-control form-control-lg" name="distrist" placeholder="Quận" required>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <input class="form-control form-control-lg" name="city" placeholder="Thành phố" required>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <input class="form-control form-control-lg" name="contry" placeholder="Quốc gia">
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Thêm</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="myModalEdit">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Edit">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Thêm địa chỉ</h4>
+                    <button onclick="closeModal()" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <input type="hidden" name="addresid" id="addresid" />
+                    <div class="form-group">
+                        <input class="form-control form-control-lg" name="streest" id="streest" placeholder="Tên đường" required>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <input class="form-control form-control-lg" name="ward" id="ward" placeholder="Phường" required>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <input class="form-control form-control-lg" name="distrist" id="distrist" placeholder="Quận" required>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <input class="form-control form-control-lg" name="city" id="city" placeholder="Thành phố" required>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <input class="form-control form-control-lg" name="contry" id="contry" placeholder="Quốc gia">
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Cập nhập</button>
+                    <button type="button" class="btn btn-danger" onclick="closeModal()">Đóng</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="myModalDelete">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="DeleteAd" method="post">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Thêm địa chỉ</h4>
+                    <button onclick="closeModalDelete()" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <input type="hidden" name="addid" id="addid" />
+                    <h2>Bạn có chắc muốn xóa địa chỉ</h2>
+                    <h3 id="diachi"></h3>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Xóa</button>
+                    <button type="button" class="btn btn-danger" onclick="closeModalDelete()">Đóng</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Đổi Mật Khẩu -->
+<div class="modal" id="changePasswordModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="ChangePassword" method="post">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Đổi Mật Khẩu</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="pass">Mật khẩu cũ</label>
+                        <input type="password" name="pass" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="newpass">Mật khẩu mới</label>
+                        <input type="password" name="newpass" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmpass">Xác nhận mật khẩu mới</label>
+                        <input type="password" name="confirmpass" class="form-control" required />
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function getaddres(id) {
+        $('#myModalEdit').modal('show');
+        $.ajax({
+            url: '/Account/Edit',
+            type: 'GET',
+            data: { id: id },
+            success: function (data) {
+                $('#addresid').val(data.id);
+                $('#streest').val(data.street);
+                $('#ward').val(data.ward);
+                $('#distrist').val(data.district);
+                $('#city').val(data.city);
+                $('#contry').val(data.country);
+                console.log(data)
+            },
+            error: function (xhr, status, error) {
+                // Xử lý lỗi
+                console.log(error); // In lỗi ra console (có thể thay đổi theo nhu cầu)
+            }
+        });
+    };
+
+
+    function closeModal() {
+        $('#myModalEdit').modal('hide');
+    };
+    function getaddres1(id) {
+        $('#myModalDelete').modal('show');
+        $.ajax({
+            url: '/Account/Edit',
+            type: 'GET',
+            data: { id: id },
+            success: function (data) {
+                $('#addid').val(data.id);
+                $('#diachi').text(data.street + ',' + data.ward + ',' + data.district + ',' + data.city + ',' + data.country);
+
+
+            },
+            error: function (xhr, status, error) {
+                // Xử lý lỗi
+                console.log(error); // In lỗi ra console (có thể thay đổi theo nhu cầu)
+            }
+        });
+    };
+    function closeModalDelete() {
+        $('#myModalDelete').modal('hide');
+    };
+</script>

@@ -1,0 +1,90 @@
+﻿@model IEnumerable<WebFM_Style.Models.ProductSizeColor>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="page-header">
+    <h3 style="font-family:Helvetica;" class="page-title"> Quản lý sản phẩm - Màu - Size </h3>
+    <nav aria-label="breadcrumb">
+
+    </nav>
+</div>
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <p>
+                <a asp-action="Create" class="btn btn-success mb-2">Thêm</a>
+            </p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Mã Code
+                            @* @Html.DisplayNameFor(model => model.Code) *@
+                        </th>
+                        <th>
+                            Màu
+                           @*  @Html.DisplayNameFor(model => model.Color) *@
+                        </th>
+                        <th>
+                            Tên sản phẩm
+                            @* @Html.DisplayNameFor(model => model.Product) *@
+                        </th>
+
+                        <th>
+                            Size
+                            @* @Html.DisplayNameFor(model => model.Size) *@
+                        </th>
+                        <th>
+                            Số lượng
+                            @* @Html.DisplayNameFor(model => model.ProductInventory.Quantity) *@
+                        </th>
+                        <th>
+                            Số lượng bán
+                            @* @Html.DisplayNameFor(model => model.ProductInventory.QuantitySold) *@
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Code)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Color.Color1)
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="@Url.Content("~/contents/Images/Product/" + item.Product.Images.FirstOrDefault().Url)"
+                                         alt="@item.Product.Name"
+                                         style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px; margin-right: 10px;">
+                                    <span>@item.Product.Name</span>
+                                </div>
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Size.Size1)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProductInventory.Quantity)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProductInventory.QuantitySold)
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="action-icon"> <i class="mdi mdi-eye" style="color:#19b6ff;font-size:25px;"></i>  </a>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="action-icon"> <i class="mdi mdi-square-edit-outline" style="color:#ffd83b;font-size:25px;"></i></a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="action-icon"> <i class="mdi mdi-delete" style="color:#e75555;font-size:25px;"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

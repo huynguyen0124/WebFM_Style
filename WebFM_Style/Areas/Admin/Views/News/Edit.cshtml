@@ -1,0 +1,78 @@
+﻿@model WebFM_Style.Models.News
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>CHỈNH SỬA</h1>
+
+<h4>Tin tức</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Status" />
+            <div class="form-group flex-grow-1 mx-4">
+                <div id="previewImages" class="d-flex flex-wrap gap-2 mb-3">
+                    <img src="@Url.Content("~/contents/Images/News/" + Model.Images)" style="width: 200px; height: 200px; border-radius: 20px;" alt="Existing Image">
+                </div>
+                <label class="control-label">Hình ảnh đại diện</label>
+                <input type="file" name="fAvatars" id="imageUpload" class="form-control-file" onchange="previewFiles(event)" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label">Tên Blog</label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label">Nội dung</label>
+                <textarea asp-for="Content" class="form-control" id="summernote"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+         
+            <div class="form-group">
+                <a asp-action="Index" class="btn btn-light">Trở về</a>
+                <button type="submit" class="btn btn-gradient-primary me-2">Sửa</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@* <div>
+    <a asp-action="Index">Back to List</a>
+</div> *@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.min.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                height: 200 // set height
+            });
+        });
+    </script>
+}
+<script>
+    const previewFiles = (event) => {
+        const files = event.target.files;
+        const previewContainer = document.getElementById("previewImages");
+        previewContainer.innerHTML = ""; // Xóa ảnh cũ
+
+        Array.from(files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const img = document.createElement("img");
+                img.src = e.target.result;
+                img.style = "width: 200px; height: 200px; border-radius: 20px; margin-right: 10px;";
+                previewContainer.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        });
+    };
+  
+</script>

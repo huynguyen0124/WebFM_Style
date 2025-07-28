@@ -1,0 +1,125 @@
+﻿@model IEnumerable<WebFM_Style.Models.Order>
+
+@{
+    ViewData["Title"] = "Index";
+    var DonHuy = ViewBag.DonHuy;
+    var TongDonHang = ViewBag.TongDonHang;
+    var TongTien = ViewBag.TongTien;
+}
+<div class="page-header">
+    <h3 style="font-family:Helvetica;" class="page-title"> DOANH THU </h3>
+    <nav aria-label="breadcrumb">
+
+    </nav>
+</div>
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <form asp-action="Search" method="post">
+
+
+                <div class="row">
+                    <div class="col-lg-3 grid-margin stretch-card">
+                        <label>Từ ngày</label>
+                        <input type="datetime-local" class="form-control" name="TuNgay" placeholder="Ngày Sinh" required>
+                    </div>
+                    <div class="col-lg-3 grid-margin stretch-card">
+                        <label>Đếm ngày ngày</label>
+                        <input type="datetime-local" class="form-control" name="DenNgay" placeholder="Ngày Sinh" required>
+                    </div>
+                    <div class="col-lg-3 grid-margin stretch-card">
+                        <button type="submit" class="btn btn-gradient-primary me-2">Tìm kiếm</button>
+                    </div>
+                    <div class="col-lg-3 grid-margin stretch-card">
+                        <button type="submit" class="btn btn-danger mb-2" formaction="/Admin/Revenue/ExportExcelNgay">Xuất file Excel</button>
+                    </div>
+                </div>
+            </form>
+            <div class="row">
+                <div class="col-lg-3 grid-margin stretch-card">
+                    <h3>Doanh Thu : @string.Format("{0:N0}", TongTien) VNĐ</h3>
+                </div>
+                <div class="col-lg-3 grid-margin stretch-card">
+                    <h3>Tổng đơn hàng : @TongDonHang</h3>
+                </div>
+                <div class="col-lg-3 grid-margin stretch-card">
+                    <h3>Đơn hàng hủy : @DonHuy</h3>
+                </div>
+            </div>
+            <hr />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Người đặt
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            SĐT
+                        </th>
+                        <th>
+                            Tổng tiền
+                        </th>
+
+                        <th>
+                            Ngày đặt
+                        </th>
+
+                        <th>
+                            Địa chỉ giao hàng
+                        </th>
+
+                        <th>
+                            Trạng thái
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.Account?.FullName
+                            </td>
+                            <td>
+                                @item.Account?.Email
+                            </td>
+                            <td>
+                                @item.Account?.Phone
+                            </td>
+                            <td>
+                                @item.Total
+                            </td>
+
+                            <td>
+                                @item?.CreateDay
+                            </td>
+                            <td>
+                                @item?.Account?.Addresses.FirstOrDefault()?.Street ,
+                                @item?.Account?.Addresses.FirstOrDefault()?.Ward,
+                                @item?.Account?.Addresses.FirstOrDefault()?.District,
+                                @item?.Account?.Addresses.FirstOrDefault()?.City
+                            </td>
+                            @if (item?.Status == 2)
+                            {
+                                <td> Chờ xác nhận</td>
+                            }
+                            @if (item?.Status == 3)
+                            {
+                                <td>Hoàn thành </td>
+                            }
+                            @if (item?.Status == 5)
+                            {
+                                <td>Đã Hủy </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

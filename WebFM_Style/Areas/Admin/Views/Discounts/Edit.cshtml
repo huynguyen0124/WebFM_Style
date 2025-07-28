@@ -1,0 +1,72 @@
+﻿@model WebFM_Style.Models.Discount
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h1>SỬA MÃ GIẢM GIÁ</h1>
+            <h4>Nhập thông tin</h4>
+            <hr />
+            <div class="row">
+                <div class="col-md-4">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                        <div class="form-group">
+                            <label asp-for="Name" class="control-label">Tên mã giảm giá</label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Code" class="control-label">Mã code</label>
+                            <input asp-for="Code" class="form-control" />
+                            <span asp-validation-for="Code" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label">Mô tả</label>
+                            <input asp-for="Description" class="form-control" />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="DiscountPercent" class="control-label">Số tiền giảm giá</label>
+                            <input asp-for="DiscountPercent" class="form-control" />
+                            <span asp-validation-for="DiscountPercent" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Quantity" class="control-label">Số lượng mã giảm giá</label>
+                            <input asp-for="Quantity" class="form-control" />
+                            <span asp-validation-for="Quantity" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="UseNumber" class="control-label">Số lượng mã sử dụng</label>
+                            <input asp-for="UseNumber" class="form-control" />
+                            <span asp-validation-for="UseNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Trạng Thái</label>
+                            <select class="form-control" asp-for="Status" placeholder="" required>
+                                <option value="1" selected>Hoạt động</option>
+                                <option value="2">Ngừng hoạt động</option>
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-gradient-primary me-2">Sửa</button>
+                            <a asp-action="Index" class="btn btn-light">Trở về</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

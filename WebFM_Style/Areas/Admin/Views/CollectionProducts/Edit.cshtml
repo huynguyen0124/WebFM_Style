@@ -1,0 +1,50 @@
+﻿@model WebFM_Style.Models.CollectionProduct
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>CHỈNH SỬA</h1>
+
+<h4>Sản phẩm Bộ sưu tập</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Cdt" />
+            <div class="form-group">
+                <label asp-for="ProductId" class="control-label">Tên sản phẩm</label>
+                <select asp-for="ProductId" class="form-control" asp-items="ViewBag.ProductId"></select>
+                <span asp-validation-for="ProductId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CollectionId" class="control-label">Bộ sưu tập</label>
+                <select asp-for="CollectionId" class="form-control" asp-items="ViewBag.CollectionId"></select>
+                <span asp-validation-for="CollectionId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Trạng Thái</label>
+                <select class="form-control" asp-for="Status" placeholder="" required>
+                    <option value="True" selected>Hoạt động</option>
+                    <option value="False">Ngừng hoạt động</option>
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-gradient-primary me-2">Thêm mới</button>
+                <a asp-action="Index" class="btn btn-light">Trở về</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,216 @@
+﻿@model IEnumerable<WebFM_Style.Models.OrderItem>
+@{
+
+    ViewBag.Title = "Cart";
+    var Id = ViewBag.AddressId;
+}
+
+
+<style>
+    /* Thêm vào file CSS của bạn */
+    /* Thêm vào file CSS của bạn */
+    .payment-method {
+        width: 100%;
+        /* Đảm bảo combobox chiếm toàn bộ chiều rộng */
+        padding: 12px 20px;
+        /* Thêm khoảng cách bên trong cho đẹp mắt */
+        border: 1px solid #ccc;
+        /* Đường viền */
+        border-radius: 5px;
+        /* Bo góc */
+        appearance: none;
+        /* Tùy chọn hiển thị */
+        background-color: #fff;
+        /* Màu nền trắng */
+        background-position: right 10px center;
+        /* Đặt icon ở bên phải */
+        background-repeat: no-repeat;
+        /* Không lặp lại icon */
+        background-size: 20px;
+        /* Kích thước icon */
+        font-size: 16px;
+        /* Kích thước chữ */
+        color: #333;
+        /* Màu chữ */
+    }
+
+        /* Tùy chọn thêm cho phần hiển thị icon */
+        .payment-method select {
+            width: calc(100% - 40px);
+            /* Giảm chiều rộng để tạo khoảng trống cho icon */
+            padding: 10px;
+            border: none;
+            font-size: 16px;
+            background-color: transparent;
+            /* Giữ nền trong suốt */
+            color: #333;
+            appearance: none;
+        }
+
+    /* Thêm CSS cho nút tăng giảm số lượng */
+    .quantity {
+        display: flex;
+        align-items: center;
+    }
+
+        .quantity input {
+            width: 50px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
+            margin: 0 5px;
+        }
+
+        .quantity button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+            .quantity button:hover {
+                background-color: #0056b3;
+            }
+</style>
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Giỏ hàng</h4>
+                    <div class="breadcrumb__links">
+                        <a href="index.html">Trang chủ</a>
+                        <a href="shop.html">Shop</a>
+                        <span>Giỏ hàng</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Shopping Cart Section Begin -->
+<section class="shopping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="shopping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Đơn giá</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int? SoSanPham = 0;
+                                decimal? tongTien = 0;
+                            }
+                            @foreach (var item in Model)
+                            {
+
+                                <tr>
+                                    <td class="product__cart__item">
+                                        <div class="product__cart__item__pic">
+                                            <img src="/contents/Images/Product/@item.ProductSizeColor.Product.Images.FirstOrDefault().Url" alt="">
+                                        </div>
+                                        <div class="product__cart__item__text">
+                                            <h6>@item.ProductSizeColor.Product.Name</h6>
+                                            <h6>Size : @item.ProductSizeColor.Size.Size1</h6>
+                                            <h6>Màu : @item.ProductSizeColor.Color.Color1</h6>
+                                            <h5>@String.Format("{0:#,##0}", item.ProductSizeColor.Product.Price * item.Quantity) VNĐ</h5>
+                                        </div>
+                                    </td>
+                                    <td class="quantity__item">
+                                        <div class="quantity">
+                                            <a class="quantity-btn" asp-controller="Orders" asp-action="UpdateOrder" asp-route-id="@item.ProductSizeColorId">-</a>
+                                            <input type="number" value="@item.Quantity" onchange="validateQuantity(this)" />
+                                            <a class="quantity-btn" asp-controller="Orders" asp-action="UpdateOrderAdd" asp-route-id="@item.ProductSizeColorId">+</a>
+                                        </div>
+                                    </td>
+                                    <td class="cart__price">@String.Format("{0:#,##0}", item.ProductSizeColor.Product.Price) VNĐ</td>
+                                    <td class="cart__close">
+
+                                        <a asp-controller="Orders" asp-action="RemoveProduct" asp-route-id="@item.ProductSizeColorId"><i class="fa fa-close"> </i></a>
+                                    </td>
+                                </tr>
+                                SoSanPham += item.Quantity;
+                                tongTien += (decimal?)(item.ProductSizeColor.Product.Price * item.Quantity);
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="continue__btn">
+                            <a asp-action="Index" asp-controller="Products">Tiếp tục mua hàng</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="cart__discount">
+                    <h6>Mã giảm giá</h6>
+                    <form action="#">
+                        <input type="text" placeholder="Coupon code">
+                        <button type="submit">Nhập mã</button>
+                    </form>
+                </div>
+                <div class="cart__total">
+                    <form asp-action="CheckOut" asp-controller="Orders">
+                        <h6>Tổng cộng giỏ hàng</h6>
+                        <ul>
+                            <li>Tổng cộng <span>@String.Format("{0:#,##0}", tongTien) VNĐ</span></li>
+                            <li>Thành tiền <span>@String.Format("{0:#,##0}", tongTien) VNĐ</span></li>
+                            <li>
+
+                            </li>
+                        </ul>
+                        <div style="display: flex; align-items: center;">
+                          
+                            <label for="payment-select" style="margin-right: 8px;">Thanh toán qua:</label>
+                           
+                            <select id="payment-select" required name="pay">
+                                <option value="1" selected>COD</option>
+                                <option value="2">VNPAY</option>
+                            </select>
+                        </div>
+                        <div style=" align-items: center;">
+                             <div >
+
+                            <label for="shipping-address-select" style="margin-right: 8px;">Địa chỉ giao hàng:</label>
+                             </div>
+                            <select name="Address" asp-items="Id" class="form-select" required>
+                                <option value="">-- Chọn Địa chỉ giao hàng --</option>
+                            </select>
+                        </div>
+                        <input type="hidden" name="total" value="@tongTien" />
+                        <div style="margin-top:80px">
+                            <button type="submit" class="primary-btn">Đặt Hàng</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shopping Cart Section End -->
+@section Scripts {
+    <script>
+        function validateQuantity(input) {
+            if (input.value <= 0) {
+                input.value = 1;
+            }
+        }
+    </script>
+}

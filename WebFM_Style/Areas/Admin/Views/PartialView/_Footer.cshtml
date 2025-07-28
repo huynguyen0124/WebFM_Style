@@ -1,0 +1,22 @@
+﻿@{
+    var AvartarClaim = User.Claims.FirstOrDefault(c => c.Type == "Avartar");
+    var Avartar = "";
+    if (AvartarClaim != null)
+    { Avartar = AvartarClaim.Value; }
+    var Userclaim = User.Claims.FirstOrDefault(x => x.Type == "UserName");
+    var UserName = "";
+    if (Userclaim != null)
+    {
+        UserName = Userclaim.Value;
+    }
+    var Idclaim = User.Claims.FirstOrDefault(x => x.Type == "Id");
+    var Id = "";
+    if (Idclaim != null)
+    {
+        Id = Idclaim.Value;
+    }
+    var AvatarAdmin = "/contents/Images/Admin/Admin.jpg";
+}
+
+
+<!-- Footer End -->

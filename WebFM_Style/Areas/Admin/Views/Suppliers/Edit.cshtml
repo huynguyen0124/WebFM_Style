@@ -1,0 +1,67 @@
+﻿@model WebFM_Style.Models.Supplier
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="col-12 grid-margin stretch-card">
+<div class="card">
+    <div class="card-body">
+        <h1>CHỈNH SỬA</h1>
+        <hr />  
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="Cdt" />
+                    <div class="form-group">
+                            <label>Tên nhà cung cấp</label>
+                        @* <label asp-for="Name" class="control-label"></label> *@
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                            <label>Địa chỉ</label>
+                        @* <label asp-for="Address" class="control-label"></label> *@
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                            <label>SĐT</label>
+                        @* <label asp-for="Phone" class="control-label"></label> *@
+                        <input asp-for="Phone" class="form-control" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                        <div class="form-group">
+                            <label>Trạng thái</label>
+                            <select class="form-control" asp-for="Status" placeholder="" required>
+                                <option value="True" selected>Hoạt động</option>
+                                <option value="False">Ngừng hoạt động</option>
+
+                            </select>
+                        </div>
+                  
+                    <div class="form-group">
+                        <a asp-action="Index" class="btn btn-light">Trở về</a>
+                        <button type="submit" class="btn btn-gradient-primary me-2">Sửa</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

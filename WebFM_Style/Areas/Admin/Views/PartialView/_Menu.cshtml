@@ -1,0 +1,115 @@
+﻿@using System.Security.Claims
+@{
+    var AvartarClaim = User.Claims.FirstOrDefault(c => c.Type == "Avartar");
+    var Avartar = "";
+    if (AvartarClaim != null)
+    { Avartar = AvartarClaim.Value; }
+    var roleClaim = User.Claims.FirstOrDefault(c => c.Type == "Role");
+    var role = roleClaim?.Value ?? "N/A";
+    var roles = Context.User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+}
+
+
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+        <li class="nav-item nav-profile">
+            <a href="#" class="nav-link">
+                <div class="nav-profile-image">
+                    <img src="@Avartar" alt="profile">
+                    <span class="login-status online"></span>
+                    <!--change to offline or busy as needed-->
+                </div>
+                <div class="nav-profile-text d-flex flex-column">
+                    <span class="font-weight-bold mb-2">@User.Identity?.Name</span>
+                    <span class="text-secondary text-small">@string.Join(", ", roles)  </span>
+                </div>
+                <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-action="Index" asp-controller="Home">
+                <span class="menu-title"> Trang chủ </span>
+                <i class="mdi mdi-home menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                <span class="menu-title">Quản lý sản phẩm</span>
+                <i class="menu-arrow"></i>
+                <i class="mdi mdi-crosshairs-gps menu-icon"></i>
+            </a>
+            <div class="collapse" id="ui-basic">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" asp-action="Index" asp-controller="Suppliers">Nhà cung cấp</a></li>
+                    <li class="nav-item"> <a class="nav-link" asp-action="Index" asp-controller="Categories">Loại sản phẩm</a></li>
+                    <li class="nav-item"> <a class="nav-link" asp-action="Index" asp-controller="ProductTypes">Sản phẩm theo loại</a></li>
+                    <li class="nav-item"> <a class="nav-link" asp-action="Index" asp-controller="Products">Sản phẩm</a></li>
+                    <li class="nav-item"> <a class="nav-link" asp-action="Index" asp-controller="ProductSizeColors">Sản phẩm Màu Size</a></li>
+                   
+                    <li class="nav-item"> <a class="nav-link" asp-action="Index" asp-controller="Colors">Màu</a></li>
+                    <li class="nav-item"> <a class="nav-link" asp-action="Index" asp-controller="Sizes">Size</a></li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-action="Index" asp-controller="Account">
+                <span class="menu-title">Khách hàng</span>
+                <i class="mdi mdi-contacts menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-action="Manage" asp-controller="Account">
+                <span class="menu-title">Quản lý</span>
+                <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-action="Index" asp-controller="Discounts">
+                <span class="menu-title">Mã giảm giá</span>
+                <i class="mdi mdi-tag-text-outline menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-action="Index" asp-controller="Revenue">
+                <span class="menu-title">Doanh thu</span>
+                <i class="mdi mdi-currency-usd menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-action="Index" asp-controller="News">
+                <span class="menu-title">Tin tức</span>
+                <i class="mdi mdi-currency-usd menu-icon"></i>
+            </a>
+        </li>  
+        <li class="nav-item">
+            <a class="nav-link" asp-action="Index" asp-controller="Collections">
+                <span class="menu-title">Bộ sưu tập</span>
+                <i class="mdi mdi-currency-usd menu-icon"></i>
+            </a>
+        </li>
+
+          <li class="nav-item">
+            <a class="nav-link" asp-action="Index" asp-controller="CollectionProducts">
+                <span class="menu-title">SP Bộ sưu tập </span>
+                <i class="mdi mdi-currency-usd menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" aria-expanded="false" aria-controls="general-pages">
+                <span class="menu-title">Quản lý bán hàng</span>
+                <i class="menu-arrow"></i>
+                <i class="mdi mdi-medical-bag menu-icon"></i>
+            </a>
+            <div class="collapse" id="general-pages">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" asp-action="Index" asp-controller="Order"> Đơn đặt hàng </a></li>
+                    <li class="nav-item"> <a class="nav-link" asp-action="CanOrder" asp-controller="Order"> Đã hủy </a></li>
+                    <li class="nav-item"> <a class="nav-link" asp-action="OrderShip" asp-controller="Order"> Đang vận chuyển </a></li>
+
+                </ul>
+            </div>
+        </li>
+
+
+    </ul>
+</nav>

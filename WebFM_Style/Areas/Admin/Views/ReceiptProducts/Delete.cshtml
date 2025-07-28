@@ -1,0 +1,71 @@
+﻿@model WebFM_Style.Models.ReceiptProduct
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>XOÁ PHIẾU NHẬP</h1>
+
+<h3>Bạn có chắc là muốn xóa không?</h3>
+<div>
+    <h4>Phiếu nhập hàng</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Số lượng
+            @* @Html.DisplayNameFor(model => model.Quantity) *@
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+        <dt class = "col-sm-2">
+            Giá tiền
+            @* @Html.DisplayNameFor(model => model.Price) *@
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+    
+        <dt class = "col-sm-2">
+            Ngày tạo
+            @* @Html.DisplayNameFor(model => model.CreateDay) *@
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CreateDay)
+        </dd>
+        <dt class = "col-sm-2">
+            Trạng thái
+            @* @Html.DisplayNameFor(model => model.Status) *@
+        </dt>
+        @if (Model.Status == 1)
+        {
+            <dd class="col-sm-10">
+                Còn hoạt động
+            </dd>
+        }
+        else
+        {
+            <dd class="col-sm-10">
+                Ngừng hoạt động
+            </dd>
+
+        }
+        @* <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd> *@
+        <dt class = "col-sm-2">
+            Sản phẩm Màu Size
+            @Html.DisplayNameFor(model => model.ProductSizeColor)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ProductSizeColor.Code)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

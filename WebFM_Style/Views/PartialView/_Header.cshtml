@@ -1,0 +1,115 @@
+﻿@{
+    var AvartarClaim = User.Claims.FirstOrDefault(c => c.Type == "Avartar");
+    var Avartar = "";
+    if (AvartarClaim != null)
+    { Avartar = AvartarClaim.Value; }
+
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<!-- Offcanvas Menu Begin -->
+<div class="offcanvas-menu-overlay"></div>
+
+<!-- Header Section Begin -->
+<header class="header">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-1 col-md-3">
+                <div class="header__logo">
+                    <a asp-action="Index" asp-controller="Home"><img src="~/User/img/logo1.png" width="80px" height="40px" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-7 col-md-6">
+                <nav class="header__menu mobile-menu">
+                    <ul>
+                        <li class="@((ViewContext.RouteData.Values["Controller"].ToString() == "Home"
+                    && ViewContext.RouteData.Values["Action"].ToString() == "Index") ? "active" : "")"><a asp-action="Index" asp-controller="Home">Trang chủ </a></li>
+                        <li class="@((ViewContext.RouteData.Values["Controller"].ToString() == "Products"
+                    && ViewContext.RouteData.Values["Action"].ToString() == "Index") ? "active" : "")"><a asp-action="Index" asp-controller="Products">Shop</a></li>
+                        <li class="@((ViewContext.RouteData.Values["Controller"].ToString() == "Collections"
+                    && ViewContext.RouteData.Values["Action"].ToString() == "Index") ? "active" : "")"><a asp-action="Index" asp-controller="Collections">Bộ sưu tập</a></li>
+                        <li class="@((ViewContext.RouteData.Values["Controller"].ToString() == "Home"
+                    && ViewContext.RouteData.Values["Action"].ToString() == "Blog") ? "active" : "")"><a asp-action="Blog" asp-controller="Home">Tin tức</a></li>
+                        <li class="@((ViewContext.RouteData.Values["Controller"].ToString() == "Home"
+                    && ViewContext.RouteData.Values["Action"].ToString() == "Contacts") ? "active" : "")"><a asp-action="Contacts" asp-controller="Home">Liên hệ</a></li>
+
+                    </ul> 
+                </nav>
+            </div>
+            <div class="col-lg-4 col-md-3">
+                <div class="header__nav__option">
+                    <a href="#" class="search-switch"><img src="~/User/img/icon/search.png" alt=""></a>
+                    <a href="#"><img src="~/User/img/icon/heart.png" alt=""></a>
+                    <a asp-action="ShoppingCart" asp-controller="Products" id="cart-link"><img src="~/User/img/icon/cart.png" alt=""> <span id="cart-count">0</span></a>
+
+                    @if (User.Identity.IsAuthenticated) // Kiểm tra xem người dùng đã đăng nhập chưa
+                    {
+                        var avatarClaim = User.Claims.FirstOrDefault(c => c.Type == "Avartar");
+                        var avatarUrl = avatarClaim != null ? avatarClaim.Value : "~/User/img/default-avatar.png"; // Đường dẫn đến ảnh đại diện
+                        var userName = User.Identity.Name; // Lấy tên người dùng
+
+                        <div class="user-info" style="position: relative; display: inline-block;">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="@avatarUrl" alt="User Avatar" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 5px;" />
+                                <span style="vertical-align: middle; margin-left: 50px;font-size:15px">@userName</span>
+                            </a>
+                            <div class="dropdown-menu" style="display: none; position: absolute; right: 0; z-index: 1000; background-color: white; border: 1px solid #ccc; border-radius: 5px; padding: 10px;">
+                                <a class="dropdown-item" href="@Url.Action("Profile", "Account")">Profile</a>
+                                <a class="dropdown-item" href="@Url.Action("Logout", "Account")">Logout</a>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <a asp-action="Login" asp-controller="Account" class="login-button" style="padding: 10px; color: #191d20; text-decoration: none; transition: color 0.3s;">
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="canvas__open"><i class="fa fa-bars"></i></div>
+    </div>
+</header>
+
+
+<script>
+    // JavaScript để xử lý dropdown
+    document.querySelector('.user-info .dropdown-toggle').addEventListener('click', function (event) {
+        event.preventDefault();
+        const dropdownMenu = this.nextElementSibling;
+        dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Đóng dropdown khi nhấp ra ngoài
+    document.addEventListener('click', function (event) {
+        const dropdownMenu = document.querySelector('.user-info .dropdown-menu');
+        if (!event.target.closest('.user-info')) {
+            dropdownMenu.style.display = 'none';
+        }
+    });
+
+    // Hàm để lấy số lượng sản phẩm trong giỏ hàng
+    function updateCartCount() {
+        // Kiểm tra xem người dùng đã đăng nhập chưa
+        if (@(User.Identity.IsAuthenticated.ToString().ToLower())) {
+            fetch('/Home/count') // Đường dẫn API để lấy số lượng sản phẩm
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('cart-count').innerText = data.count; // Cập nhật số lượng sản phẩm
+                })
+                .catch(error => console.error('Error fetching cart count:', error));
+        }
+    }
+
+    // Gọi hàm để cập nhật số lượng sản phẩm ngay khi trang được tải
+    document.addEventListener('DOMContentLoaded', function() {
+        updateCartCount(); // Gọi hàm ngay khi trang được tải
+    });
+</script>
